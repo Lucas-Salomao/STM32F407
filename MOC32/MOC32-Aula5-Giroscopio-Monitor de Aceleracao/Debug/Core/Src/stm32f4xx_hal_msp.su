@@ -1,0 +1,7 @@
+../Core/Src/stm32f4xx_hal_msp.c:63:6:HAL_MspInit	16	static
+../Core/Src/stm32f4xx_hal_msp.c:85:6:HAL_I2C_MspInit	48	static
+../Core/Src/stm32f4xx_hal_msp.c:121:6:HAL_I2C_MspDeInit	16	static
+../Core/Src/stm32f4xx_hal_msp.c:148:13:HAL_FSMC_MspInit	32	static
+../Core/Src/stm32f4xx_hal_msp.c:195:6:HAL_SRAM_MspInit	16	static
+../Core/Src/stm32f4xx_hal_msp.c:207:13:HAL_FSMC_MspDeInit	8	static
+../Core/Src/stm32f4xx_hal_msp.c:242:6:HAL_SRAM_MspDeInit	16	static

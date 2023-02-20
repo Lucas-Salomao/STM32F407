@@ -1,0 +1,3 @@
+../Core/Src/MadgwickAHRS.c:10:6:calculate_orientation	216	static
+../Core/Src/MadgwickAHRS.c:118:6:north_position	56	static
+../Core/Src/MadgwickAHRS.c:131:6:calculate_position	56	static
