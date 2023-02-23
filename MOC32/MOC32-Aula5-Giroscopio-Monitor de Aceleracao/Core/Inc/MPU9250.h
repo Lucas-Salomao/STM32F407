@@ -8,27 +8,12 @@
 #ifndef INC_MPU9250_H_
 #define INC_MPU9250_H_
 
-#include "stm32f4xx_hal.h"
-
-I2C_HandleTypeDef hi2c;
-
-int16_t accelCount[3];
-int16_t gyroCount[3];
-int16_t magCount[3];
-
-float ax, ay, az;
-float gx, gy, gz;
-float mx, my, mz;
-float ex, ey, ez;
-float dt, Kp;
-
-float q[4] = { 1.0f, 0.0f, 0.0f, 0.0f };
-
-float yaw, pitch, roll;
-float yawRad, pitchRad, rollRad;
+//#include "stm32f4xx_hal.h"
 
 #define MAGNETOMETER_SCALE 0.15f
-float magnetometer_scale = MAGNETOMETER_SCALE;
+
+#define MPU9250_ADDRESS 0x68<<1
+#define AK8963_ADDRESS 0x0C<<1
 
 // Scale options for accelerometer
 #define MPU9250_ACCEL_SCALE_2G 0x00
@@ -43,11 +28,62 @@ float magnetometer_scale = MAGNETOMETER_SCALE;
 #define MPU9250_GYRO_SCALE_2000DPS 0x18
 
 // Scale options for magnetometer
-#define MPU9250_MAG_SCALE_14BITS 0x00
-#define MPU9250_MAG_SCALE_16BITS 0x10
+#define AK8963_MAG_SCALE_14BITS 0x00
+#define AK8963_MAG_SCALE_16BITS 0x10
+
+enum AK8963_MODE {
+  POWER_DOWN = 0,
+  SINGLE_MES=1,
+  CONTINOUS1=2,
+  CONTINOUS2=6,
+  EXTERNAL_TRIGGER=4,
+  SELF_TEST=8,
+  FUSE_ROM=15
+};
 
 // MPU9250 Registers
-
+#define SELF_TEST_X_GYRO 0x00
+#define SELF_TEST_Y_GYRO 0x01
+#define SELF_TEST_Z_GYRO 0x02
+#define SELF_TEST_X_ACCEL 0x0D
+#define SELF_TEST_Y_ACCEL 0x0E
+#define SELF_TEST_Z_ACCEL 0X0F
+#define XG_OFFSET_H 0X13
+#define XG_OFFSET_L 0X14
+#define YG_OFFSET_H 0X15
+#define YG_OFFSET_L 0X16
+#define ZG_OFFSET_H 0X17
+#define ZG_OFFSET_L 0X18
+#define SMPLRT_DIV 0X19
+#define CONFIG 0X1A
+#define GYRO_CONFIG 0X1B
+#define ACCEL_CONFIG 0X1C
+#define ACCEL_CONFIG2 0X1D
+#define LP_ACCEL_ODR 0X1E
+#define WOM_THR 0X1F
+#define FIFO_EN 0X23
+#define I2C_MST_CTRL 0x24
+#define I2C_SLV0_ADDR 0x25
+#define I2C_SLV0_REG 0X26
+#define I2C_SLV0_CTRL 0X27
+#define I2C_SLV1_ADDR 0X28
+#define I2C_SLV1_REG 0X29
+#define I2C_SLV1_CTRL 0X2A
+#define I2C_SLV2_ADDR 0X2B
+#define I2C_SLV2_REG 0X2C
+#define I2C_SLV2_CTRL 0X2D
+#define I2C_SLV3_ADDR 0X2E
+#define I2C_SLV3_REG 0X2F
+#define I2C_SLV3_CTRL 0X30
+#define I2C_SLV4_ADDR 0X31
+#define I2C_SLV4_REG 0X32
+#define I2C_SLV4_DO 0X33
+#define I2C_SLV4_CTRL 0X34
+#define I2C_SLV4_DI 0X35
+#define I2C_MST_STATUS 0X36
+#define INT_PIN_CFG 0X37
+#define INT_ENABLE 0X38
+#define INT_STATUS 0X3A
 #define ACCEL_XOUT_H 0x3B
 #define ACCEL_XOUT_L 0x3C
 #define ACCEL_YOUT_H 0x3D
@@ -91,16 +127,15 @@ float magnetometer_scale = MAGNETOMETER_SCALE;
 #define I2C_SLV2_DO 0x65
 #define I2C_SLV3_DO 0x66
 #define I2C_MST_DELAY_CTRL 0x67
-#define MPU9250_ADDRESS 0x68
+#define SIGNAL_PATH_RESET 0x68
 #define MOT_DETECT_CTRL 0x69
 #define USER_CTRL 0x6A
 #define PWR_MGMT_1 0x6B
 #define PWR_MGMT_2 0x6C
-#define WHO_AM_I_VAL 0x71
 #define FIFO_COUNTH 0x72
 #define FIFO_COUNTL 0x73
 #define FIFO_R_W 0x74
-#define WHO_AM_I_REGISTER 0x75
+#define WHO_AM_I 0x75
 #define XA_OFFSET_H 0x77
 #define XA_OFFSET_L 0x78
 #define YA_OFFSET_H 0x7A
@@ -108,13 +143,8 @@ float magnetometer_scale = MAGNETOMETER_SCALE;
 #define ZA_OFFSET_H 0x7D
 #define ZA_OFFSET_L 0x7E
 
-#define GYRO_CONFIG 0x1B
-#define ACCEL_CONFIG 0x1C
-#define ACCEL_CONFIG_2 0x1D
-
-#define AK8963_ADDRESS 0x0C
+//AK8963 Registers
 #define AK8963_WHO_AM_I 0x00
-#define AK8963_WHO_AM_I_VAL 0x48
 #define AK8963_INFO 0x01
 #define AK8963_ST1 0x02
 #define AK8963_XOUT_L 0x03
@@ -124,18 +154,25 @@ float magnetometer_scale = MAGNETOMETER_SCALE;
 #define AK8963_ZOUT_L 0x07
 #define AK8963_ZOUT_H 0x08
 #define AK8963_ST2 0x09
-#define AK8963_CNTL1 0x0A
+#define AK8963_CNTL 0x0A
 #define AK8963_ASTC 0x0C
+#define AK8963_TS1 0x0D
+#define AK8963_TS2 0x0E
 #define AK8963_I2CDIS 0x0F
 #define AK8963_ASAX 0x10
 #define AK8963_ASAY 0x11
 #define AK8963_ASAZ 0x12
 
-void MPU9250_init(I2C_HandleTypeDef i2c);
+
+
+
+
+void MPU9250_init();
 void MPU9250_read_accel_data(int16_t* destination);
 void MPU9250_read_gyro_data(int16_t* destination);
 void MPU9250_read_mag_data(int16_t* destination);
-void MPU9250_read_all_data(int16_t* accel_data, int16_t* gyro_data, int16_t* mag_data);
+void MPU9250_read_temp(int16_t *destination);
+void MPU9250_read_all_data();
 void updateIMU();
 void updateOrientation();
 void getEulerAngles_rad(float *roll, float *pitch, float *yaw);

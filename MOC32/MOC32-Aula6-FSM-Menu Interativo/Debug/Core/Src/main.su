@@ -1,0 +1,8 @@
+../Core/Src/main.c:97:5:main	8	static
+../Core/Src/main.c:159:6:SystemClock_Config	88	static
+../Core/Src/main.c:206:13:MX_GPIO_Init	48	static
+../Core/Src/main.c:231:13:MX_FSMC_Init	40	static
+../Core/Src/main.c:284:6:tftMenuColors	24	static
+../Core/Src/main.c:303:6:tftMenuWrite	24	static
+../Core/Src/main.c:365:6:encoderInit	8	static
+../Core/Src/main.c:404:6:Error_Handler	4	static,ignoring_inline_asm

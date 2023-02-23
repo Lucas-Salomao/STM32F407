@@ -401,8 +401,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   // Verifica se a UART é a UART2
   if (huart->Instance == USART2)
   {
-    // Transmite o dado recebido de volta através da UART2
-    HAL_UART_Transmit(&huart2, &rx_data, 5, HAL_MAX_DELAY);
+	char tx_buffer[50]; // buffer temporário
+    sprintf(tx_buffer, "Recebido via int. da USART2: %s\n\r", rx_data); // concatena as strings
+    HAL_UART_Transmit(&huart2, (uint8_t *)tx_buffer, strlen(tx_buffer), 100); // transmite a string concatenada
     // Prepara a próxima recepção
     HAL_UART_Receive_IT(&huart2, &rx_data, 5);
   }
