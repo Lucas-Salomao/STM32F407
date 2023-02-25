@@ -40,6 +40,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define MOUSE_SCALE	1.0f
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -57,6 +58,11 @@ SRAM_HandleTypeDef hsram1;
 /* USER CODE BEGIN PV */
 extern const unsigned short paint_resize[76800];
 char Uart_buf[100];
+uint16_t x_cursor=160;
+uint16_t y_cursor=120;
+uint16_t x_old=160;
+uint16_t y_old=120;
+unsigned short screen[76800];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -68,7 +74,8 @@ static void MX_USART2_UART_Init(void);
 void MX_USB_HOST_Process(void);
 
 /* USER CODE BEGIN PFP */
-
+void desenha_cursor(uint16_t x, uint16_t y);
+void apaga_cursor(uint16_t x, uint16_t y);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -112,10 +119,11 @@ int main(void)
   ili9341_Init();
   ili9341_DrawRGBImage(0, 0, 320, 240, paint_resize);
   HAL_GPIO_WritePin(OTG_FS_PowerSwitchOn_GPIO_Port, OTG_FS_PowerSwitchOn_Pin, GPIO_PIN_RESET);
-  ili9341_DrawTriangle(160, 120, 160, 137, 172, 132, COLOR_BLACK);
-  ili9341_DrawLine(165, 135, 167, 140, COLOR_BLACK);
-  ili9341_DrawLine(167, 140, 170, 138, COLOR_BLACK);
-  ili9341_DrawLine(170, 138, 168, 133, COLOR_BLACK);
+//  ili9341_DrawTriangle(160, 120, 160, 137, 172, 132, COLOR_BLACK);
+//  ili9341_DrawLine(165, 135, 167, 140, COLOR_BLACK);
+//  ili9341_DrawLine(167, 140, 170, 138, COLOR_BLACK);
+//  ili9341_DrawLine(170, 138, 168, 133, COLOR_BLACK);
+  desenha_cursor(x_cursor,y_cursor);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -370,8 +378,48 @@ void USBH_HID_EventCallback(USBH_HandleTypeDef *phost)
 		if(Y_Val > 127) Y_Val -= 255;
 		int len = sprintf(Uart_buf, "X=%d, Y=%d, Button1=%d, Button2=%d, Button3=%d\r\n", X_Val, Y_Val, Mouse_Info->buttons[0], Mouse_Info->buttons[1], Mouse_Info->buttons[2]);
 		HAL_UART_Transmit(&huart2, (uint8_t *)Uart_buf, len, 1000);
+
+		apaga_cursor(x_old, y_old);
+		x_cursor=x_cursor+(int)(X_Val*MOUSE_SCALE);
+		y_cursor=y_cursor+(int)(Y_Val*MOUSE_SCALE);
+		desenha_cursor(x_cursor, y_cursor);
+		x_old=x_cursor;
+		y_old=y_cursor;
+
+		if(Mouse_Info->buttons[0]==1&Mouse_Info->buttons[1]==0&Mouse_Info->buttons[2]==0) // botao direito
+		{
+			ili9341_WritePixel(x_cursor-1, y_cursor-1, COLOR_RED);
+		}
+		if(Mouse_Info->buttons[0]==0&Mouse_Info->buttons[1]==1&Mouse_Info->buttons[2]==0) // botao esquerdo
+		{
+			ili9341_WritePixel(x_cursor-1, y_cursor-1, COLOR_BLUE);
+		}
+		if(Mouse_Info->buttons[0]==0&Mouse_Info->buttons[1]==0&Mouse_Info->buttons[2]==1) // scroll pressionado
+		{
+			ili9341_DrawRGBImage(0, 0, 320, 240, paint_resize);
+			desenha_cursor(x_cursor, y_cursor);
+		}
+		if(Mouse_Info->buttons[0]==1&Mouse_Info->buttons[1]==1&Mouse_Info->buttons[2]==0) // botao esquerdo
+		{
+			ili9341_WritePixel(x_cursor-1, y_cursor-1, COLOR_GREEN);
+		}
+
 	}
 
+}
+void desenha_cursor(uint16_t x, uint16_t y)
+{
+	ili9341_DrawTriangle(x, y, x, y+17, x+12, y+12, COLOR_BLACK);
+	ili9341_DrawLine(x+5, y+15, x+7, y+20, COLOR_BLACK);
+	ili9341_DrawLine(x+7, y+20, x+10, y+18, COLOR_BLACK);
+	ili9341_DrawLine(x+10, y+18, x+8, y+13, COLOR_BLACK);
+}
+void apaga_cursor(uint16_t x, uint16_t y)
+{
+	ili9341_DrawTriangle(x, y, x, y+17, x+12, y+12, COLOR_WHITE);
+	ili9341_DrawLine(x+5, y+15, x+7, y+20, COLOR_WHITE);
+	ili9341_DrawLine(x+7, y+20, x+10, y+18, COLOR_WHITE);
+	ili9341_DrawLine(x+10, y+18, x+8, y+13, COLOR_WHITE);
 }
 /* USER CODE END 4 */
 
