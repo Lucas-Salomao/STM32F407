@@ -39,13 +39,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_macro  00024fd3  00000000  00000000  00038a70  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00016b2d  00000000  00000000  0005da43  2**0
+ 18 .debug_line   00016bff  00000000  00000000  0005da43  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000da869  00000000  00000000  00074570  2**0
+ 19 .debug_str    000da865  00000000  00000000  00074642  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000050  00000000  00000000  0014edd9  2**0
+ 20 .comment      00000050  00000000  00000000  0014eea7  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  0000485c  00000000  00000000  0014ee2c  2**2
+ 21 .debug_frame  0000485c  00000000  00000000  0014eef8  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -2869,11 +2869,11 @@ size_t write(uint8_t c)
  80014c6:	b2da      	uxtb	r2, r3
  80014c8:	4b40      	ldr	r3, [pc, #256]	; (80015cc <write+0x134>)
  80014ca:	701a      	strb	r2, [r3, #0]
- 80014cc:	e072      	b.n	80015b4 <write+0x11c>
+ 80014cc:	e073      	b.n	80015b6 <write+0x11e>
         } else if(c != '\r') {
  80014ce:	79fb      	ldrb	r3, [r7, #7]
  80014d0:	2b0d      	cmp	r3, #13
- 80014d2:	d06f      	beq.n	80015b4 <write+0x11c>
+ 80014d2:	d070      	beq.n	80015b6 <write+0x11e>
             uint8_t first = pgm_read_byte(&gfxFont->first);
  80014d4:	4b3b      	ldr	r3, [pc, #236]	; (80015c4 <write+0x12c>)
  80014d6:	681b      	ldr	r3, [r3, #0]
@@ -2883,14 +2883,14 @@ size_t write(uint8_t c)
  80014dc:	79fa      	ldrb	r2, [r7, #7]
  80014de:	7dfb      	ldrb	r3, [r7, #23]
  80014e0:	429a      	cmp	r2, r3
- 80014e2:	d367      	bcc.n	80015b4 <write+0x11c>
+ 80014e2:	d368      	bcc.n	80015b6 <write+0x11e>
  80014e4:	4b37      	ldr	r3, [pc, #220]	; (80015c4 <write+0x12c>)
  80014e6:	681b      	ldr	r3, [r3, #0]
  80014e8:	3309      	adds	r3, #9
  80014ea:	781b      	ldrb	r3, [r3, #0]
  80014ec:	79fa      	ldrb	r2, [r7, #7]
  80014ee:	429a      	cmp	r2, r3
- 80014f0:	d860      	bhi.n	80015b4 <write+0x11c>
+ 80014f0:	d861      	bhi.n	80015b6 <write+0x11e>
                 GFXglyph *glyph = &(((GFXglyph *)pgm_read_pointer(
                   &gfxFont->glyph))[c - first]);
  80014f2:	79fa      	ldrb	r2, [r7, #7]
@@ -2917,21 +2917,21 @@ size_t write(uint8_t c)
                 if((w > 0) && (h > 0)) { // Is there an associated bitmap?
  8001512:	7bfb      	ldrb	r3, [r7, #15]
  8001514:	2b00      	cmp	r3, #0
- 8001516:	d03f      	beq.n	8001598 <write+0x100>
+ 8001516:	d040      	beq.n	800159a <write+0x102>
  8001518:	7bbb      	ldrb	r3, [r7, #14]
  800151a:	2b00      	cmp	r3, #0
- 800151c:	d03c      	beq.n	8001598 <write+0x100>
+ 800151c:	d03d      	beq.n	800159a <write+0x102>
                     int16_t xo = (int8_t)pgm_read_byte(&glyph->xOffset); // sic
  800151e:	693b      	ldr	r3, [r7, #16]
  8001520:	3305      	adds	r3, #5
  8001522:	781b      	ldrb	r3, [r3, #0]
  8001524:	b25b      	sxtb	r3, r3
  8001526:	81bb      	strh	r3, [r7, #12]
-                    if(wrap && ((cursor_x + textsize * (xo + w)) > ILI9341_LCD_PIXEL_WIDTH)) {
+                    if(wrap && ((cursor_x + textsize * (xo + w)) > ILI9341_SIZE_X)) {
  8001528:	4b29      	ldr	r3, [pc, #164]	; (80015d0 <write+0x138>)
  800152a:	781b      	ldrb	r3, [r3, #0]
  800152c:	2b00      	cmp	r3, #0
- 800152e:	d020      	beq.n	8001572 <write+0xda>
+ 800152e:	d021      	beq.n	8001574 <write+0xdc>
  8001530:	4b23      	ldr	r3, [pc, #140]	; (80015c0 <write+0x128>)
  8001532:	781b      	ldrb	r3, [r3, #0]
  8001534:	4619      	mov	r1, r3
@@ -2943,76 +2943,75 @@ size_t write(uint8_t c)
  8001542:	4413      	add	r3, r2
  8001544:	fb00 f303 	mul.w	r3, r0, r3
  8001548:	440b      	add	r3, r1
- 800154a:	2bf0      	cmp	r3, #240	; 0xf0
- 800154c:	dd11      	ble.n	8001572 <write+0xda>
+ 800154a:	f5b3 7fa0 	cmp.w	r3, #320	; 0x140
+ 800154e:	dd11      	ble.n	8001574 <write+0xdc>
                         cursor_x  = 0;
- 800154e:	4b1c      	ldr	r3, [pc, #112]	; (80015c0 <write+0x128>)
- 8001550:	2200      	movs	r2, #0
- 8001552:	701a      	strb	r2, [r3, #0]
+ 8001550:	4b1b      	ldr	r3, [pc, #108]	; (80015c0 <write+0x128>)
+ 8001552:	2200      	movs	r2, #0
+ 8001554:	701a      	strb	r2, [r3, #0]
                         cursor_y += (int16_t)textsize *
                           (uint8_t)pgm_read_byte(&gfxFont->yAdvance);
- 8001554:	4b1b      	ldr	r3, [pc, #108]	; (80015c4 <write+0x12c>)
- 8001556:	681b      	ldr	r3, [r3, #0]
- 8001558:	330a      	adds	r3, #10
- 800155a:	781a      	ldrb	r2, [r3, #0]
+ 8001556:	4b1b      	ldr	r3, [pc, #108]	; (80015c4 <write+0x12c>)
+ 8001558:	681b      	ldr	r3, [r3, #0]
+ 800155a:	330a      	adds	r3, #10
+ 800155c:	781a      	ldrb	r2, [r3, #0]
                         cursor_y += (int16_t)textsize *
- 800155c:	4b1a      	ldr	r3, [pc, #104]	; (80015c8 <write+0x130>)
- 800155e:	781b      	ldrb	r3, [r3, #0]
- 8001560:	fb12 f303 	smulbb	r3, r2, r3
- 8001564:	b2da      	uxtb	r2, r3
- 8001566:	4b19      	ldr	r3, [pc, #100]	; (80015cc <write+0x134>)
- 8001568:	781b      	ldrb	r3, [r3, #0]
- 800156a:	4413      	add	r3, r2
- 800156c:	b2da      	uxtb	r2, r3
- 800156e:	4b17      	ldr	r3, [pc, #92]	; (80015cc <write+0x134>)
- 8001570:	701a      	strb	r2, [r3, #0]
+ 800155e:	4b1a      	ldr	r3, [pc, #104]	; (80015c8 <write+0x130>)
+ 8001560:	781b      	ldrb	r3, [r3, #0]
+ 8001562:	fb12 f303 	smulbb	r3, r2, r3
+ 8001566:	b2da      	uxtb	r2, r3
+ 8001568:	4b18      	ldr	r3, [pc, #96]	; (80015cc <write+0x134>)
+ 800156a:	781b      	ldrb	r3, [r3, #0]
+ 800156c:	4413      	add	r3, r2
+ 800156e:	b2da      	uxtb	r2, r3
+ 8001570:	4b16      	ldr	r3, [pc, #88]	; (80015cc <write+0x134>)
+ 8001572:	701a      	strb	r2, [r3, #0]
                     }
                     drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
- 8001572:	4b13      	ldr	r3, [pc, #76]	; (80015c0 <write+0x128>)
- 8001574:	781b      	ldrb	r3, [r3, #0]
- 8001576:	b218      	sxth	r0, r3
- 8001578:	4b14      	ldr	r3, [pc, #80]	; (80015cc <write+0x134>)
- 800157a:	781b      	ldrb	r3, [r3, #0]
- 800157c:	b219      	sxth	r1, r3
- 800157e:	4b15      	ldr	r3, [pc, #84]	; (80015d4 <write+0x13c>)
- 8001580:	881d      	ldrh	r5, [r3, #0]
- 8001582:	4b15      	ldr	r3, [pc, #84]	; (80015d8 <write+0x140>)
- 8001584:	881b      	ldrh	r3, [r3, #0]
- 8001586:	4a10      	ldr	r2, [pc, #64]	; (80015c8 <write+0x130>)
- 8001588:	7812      	ldrb	r2, [r2, #0]
- 800158a:	79fc      	ldrb	r4, [r7, #7]
- 800158c:	9201      	str	r2, [sp, #4]
- 800158e:	9300      	str	r3, [sp, #0]
- 8001590:	462b      	mov	r3, r5
- 8001592:	4622      	mov	r2, r4
- 8001594:	f7ff fec6 	bl	8001324 <drawChar>
+ 8001574:	4b12      	ldr	r3, [pc, #72]	; (80015c0 <write+0x128>)
+ 8001576:	781b      	ldrb	r3, [r3, #0]
+ 8001578:	b218      	sxth	r0, r3
+ 800157a:	4b14      	ldr	r3, [pc, #80]	; (80015cc <write+0x134>)
+ 800157c:	781b      	ldrb	r3, [r3, #0]
+ 800157e:	b219      	sxth	r1, r3
+ 8001580:	4b14      	ldr	r3, [pc, #80]	; (80015d4 <write+0x13c>)
+ 8001582:	881d      	ldrh	r5, [r3, #0]
+ 8001584:	4b14      	ldr	r3, [pc, #80]	; (80015d8 <write+0x140>)
+ 8001586:	881b      	ldrh	r3, [r3, #0]
+ 8001588:	4a0f      	ldr	r2, [pc, #60]	; (80015c8 <write+0x130>)
+ 800158a:	7812      	ldrb	r2, [r2, #0]
+ 800158c:	79fc      	ldrb	r4, [r7, #7]
+ 800158e:	9201      	str	r2, [sp, #4]
+ 8001590:	9300      	str	r3, [sp, #0]
+ 8001592:	462b      	mov	r3, r5
+ 8001594:	4622      	mov	r2, r4
+ 8001596:	f7ff fec5 	bl	8001324 <drawChar>
                 }
                 cursor_x += (uint8_t)pgm_read_byte(&glyph->xAdvance) * (int16_t)textsize;
- 8001598:	693b      	ldr	r3, [r7, #16]
- 800159a:	3304      	adds	r3, #4
- 800159c:	781a      	ldrb	r2, [r3, #0]
- 800159e:	4b0a      	ldr	r3, [pc, #40]	; (80015c8 <write+0x130>)
- 80015a0:	781b      	ldrb	r3, [r3, #0]
- 80015a2:	fb12 f303 	smulbb	r3, r2, r3
- 80015a6:	b2da      	uxtb	r2, r3
- 80015a8:	4b05      	ldr	r3, [pc, #20]	; (80015c0 <write+0x128>)
- 80015aa:	781b      	ldrb	r3, [r3, #0]
- 80015ac:	4413      	add	r3, r2
- 80015ae:	b2da      	uxtb	r2, r3
- 80015b0:	4b03      	ldr	r3, [pc, #12]	; (80015c0 <write+0x128>)
- 80015b2:	701a      	strb	r2, [r3, #0]
+ 800159a:	693b      	ldr	r3, [r7, #16]
+ 800159c:	3304      	adds	r3, #4
+ 800159e:	781a      	ldrb	r2, [r3, #0]
+ 80015a0:	4b09      	ldr	r3, [pc, #36]	; (80015c8 <write+0x130>)
+ 80015a2:	781b      	ldrb	r3, [r3, #0]
+ 80015a4:	fb12 f303 	smulbb	r3, r2, r3
+ 80015a8:	b2da      	uxtb	r2, r3
+ 80015aa:	4b05      	ldr	r3, [pc, #20]	; (80015c0 <write+0x128>)
+ 80015ac:	781b      	ldrb	r3, [r3, #0]
+ 80015ae:	4413      	add	r3, r2
+ 80015b0:	b2da      	uxtb	r2, r3
+ 80015b2:	4b03      	ldr	r3, [pc, #12]	; (80015c0 <write+0x128>)
+ 80015b4:	701a      	strb	r2, [r3, #0]
             }
         }
 
     }
     return 1;
- 80015b4:	2301      	movs	r3, #1
+ 80015b6:	2301      	movs	r3, #1
 }
- 80015b6:	4618      	mov	r0, r3
- 80015b8:	3718      	adds	r7, #24
- 80015ba:	46bd      	mov	sp, r7
- 80015bc:	bdb0      	pop	{r4, r5, r7, pc}
- 80015be:	bf00      	nop
+ 80015b8:	4618      	mov	r0, r3
+ 80015ba:	3718      	adds	r7, #24
+ 80015bc:	46bd      	mov	sp, r7
+ 80015be:	bdb0      	pop	{r4, r5, r7, pc}
  80015c0:	200000b1 	.word	0x200000b1
  80015c4:	200000ac 	.word	0x200000ac
  80015c8:	20000001 	.word	0x20000001

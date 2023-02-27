@@ -64,8 +64,8 @@ all: main-build
 main-build: MOC32-Aula3\ -Cartao\ SD-Porta\ Retrato.elf secondary-outputs
 
 # Tool invocations
-MOC32-Aula3\ -Cartao\ SD-Porta\ Retrato.elf MOC32-Aula3\ -Cartao\ SD-Porta\ Retrato.map: $(OBJS) $(USER_OBJS) C:\Users\salom\STM32CubeIDE\workspace_1.10.1\MOC32-Aula3\ -Cartao\ SD-Porta\ Retrato\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "MOC32-Aula3 -Cartao SD-Porta Retrato.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\salom\STM32CubeIDE\workspace_1.10.1\MOC32-Aula3 -Cartao SD-Porta Retrato\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MOC32-Aula3 -Cartao SD-Porta Retrato.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+MOC32-Aula3\ -Cartao\ SD-Porta\ Retrato.elf MOC32-Aula3\ -Cartao\ SD-Porta\ Retrato.map: $(OBJS) $(USER_OBJS) C:\Users\salom\Documents\STM32F407\MOC32\MOC32-Aula3\ -Cartao\ SD-Porta\ Retrato\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "MOC32-Aula3 -Cartao SD-Porta Retrato.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\salom\Documents\STM32F407\MOC32\MOC32-Aula3 -Cartao SD-Porta Retrato\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MOC32-Aula3 -Cartao SD-Porta Retrato.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

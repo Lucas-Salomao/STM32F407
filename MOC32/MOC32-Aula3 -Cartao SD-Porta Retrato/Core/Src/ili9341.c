@@ -1191,7 +1191,7 @@ size_t write(uint8_t c)
                           h     = pgm_read_byte(&glyph->height);
                 if((w > 0) && (h > 0)) { // Is there an associated bitmap?
                     int16_t xo = (int8_t)pgm_read_byte(&glyph->xOffset); // sic
-                    if(wrap && ((cursor_x + textsize * (xo + w)) > ILI9341_LCD_PIXEL_WIDTH)) {
+                    if(wrap && ((cursor_x + textsize * (xo + w)) > ILI9341_SIZE_X)) {
                         cursor_x  = 0;
                         cursor_y += (int16_t)textsize *
                           (uint8_t)pgm_read_byte(&gfxFont->yAdvance);

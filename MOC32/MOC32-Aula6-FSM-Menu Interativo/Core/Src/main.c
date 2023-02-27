@@ -144,6 +144,7 @@ int main(void)
 	  //3. Lê a entrada
 	  if(HAL_GPIO_ReadPin(BTN_OK_GPIO_Port, BTN_OK_Pin) == GPIO_PIN_RESET)
 	  {
+		  while(HAL_GPIO_ReadPin(BTN_OK_GPIO_Port, BTN_OK_Pin) == GPIO_PIN_RESET);
 		  buttonStatus = menuColorsValue;
 		  fsmMenuState = Fsm[fsmMenuState].next[buttonStatus];
 		  tftMenuWrite(Fsm[fsmMenuState].out);

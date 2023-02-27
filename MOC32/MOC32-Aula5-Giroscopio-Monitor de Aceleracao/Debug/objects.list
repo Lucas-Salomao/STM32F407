@@ -1,5 +1,8 @@
 "./Core/Src/MPU9250.o"
 "./Core/Src/MadgwickAHRS.o"
+"./Core/Src/fonts.o"
+"./Core/Src/ili9341.o"
+"./Core/Src/lcd_io_fsmc8.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32f4xx_hal_msp.o"
 "./Core/Src/stm32f4xx_it.o"

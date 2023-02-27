@@ -533,7 +533,7 @@ void ili9341_FillRect(uint16_t Xpos, uint16_t Ypos, uint16_t Xsize, uint16_t Ysi
 
 void ili9341_FillScreen(uint16_t color)
 {
-	ili9341_FillRect(0, 0, ILI9341_LCD_PIXEL_WIDTH, ILI9341_LCD_PIXEL_HEIGHT, color);
+	ili9341_FillRect(0, 0, ILI9341_SIZE_X, ILI9341_SIZE_Y, color);
 }
 
 void  ili9341_DrawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color)

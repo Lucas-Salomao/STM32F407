@@ -118,8 +118,9 @@ int main(void)
   HAL_UART_Receive_IT(&huart2, dataReceivedInTheRx, 1);
   ili9341_Init();
   ili9341_FillScreen(COLOR_BLACK); // fundo com tela preta
-  ili9341_DrawRGBImage(0, 172, 320, 240, gameImage); // carrega a imagem do game
-  ili9341_DrawRGBImage(0, 235, 320, 62, StrengthAimImage);
+  ili9341_DrawRGBImage(0, 0, 320, 171, gameImage); // carrega a imagem do game
+  ili9341_DrawRGBImage(0, 180, 320, 62, StrengthAimImage);
+
   initImageBall(); // inicializa a função criar bola de basquete
   /* USER CODE END 2 */
 
@@ -368,7 +369,7 @@ void checkingRxData()
 		{
 			animationHitThePitch();
 			ili9341_FillScreen(COLOR_BLACK); // fundo com tela preta
-			ili9341_DrawRGBImage(40, 239, 240, 240, youWinImage); // carrega a imagem do game
+			ili9341_DrawRGBImage(40, 0, 240, 240, youWinImage); // carrega a imagem do game
 			HAL_Delay(2000);
 			NVIC_SystemReset();
 		}
@@ -376,7 +377,7 @@ void checkingRxData()
 		{
 			strongThrowAnimation();
 			ili9341_FillScreen(COLOR_BLACK); // fundo com tela preta
-			ili9341_DrawRGBImage(10, 239, 300, 240, gameOverImage); // carrega a imagem do game
+			ili9341_DrawRGBImage(10, 0, 300, 240, gameOverImage); // carrega a imagem do game
 			HAL_Delay(2000);
 			NVIC_SystemReset();
 		}
@@ -384,7 +385,7 @@ void checkingRxData()
 		{
 			weakThrowAnimation();
 			ili9341_FillScreen(COLOR_BLACK); // fundo com tela preta
-			ili9341_DrawRGBImage(10, 239, 300, 240, gameOverImage); // carrega a imagem do game
+			ili9341_DrawRGBImage(10, 0, 300, 240, gameOverImage); // carrega a imagem do game
 			HAL_Delay(2000);
 			NVIC_SystemReset();
 		}
@@ -406,17 +407,19 @@ void initStrengthBar() // função iniciar barra de força
 		for (int i = 4; i <= 300; i = i + 10)
 		{
 			strengthBarAimValue = i;
-			ili9341_DrawRGBImage(0, 235, 320, 62, StrengthAimImage);
-			ili9341_FillRect(strengthBarAimValue, 235, 20, -62, COLOR_BLACK);
+			ili9341_DrawRGBImage(0, 180, 320, 62, StrengthAimImage);
+			ili9341_FillRect(strengthBarAimValue, 178, 20, 62, COLOR_BLACK);
 			checkingRxData();
+			HAL_Delay(50);
 		}
 	} else {
 		for (int i = 310; i >= 10; i = i - 10)
 		{
 			strengthBarAimValue = i;
-			ili9341_DrawRGBImage(0, 235, 320, 62, StrengthAimImage);
-			ili9341_FillRect(strengthBarAimValue, 235, 20, -62, COLOR_BLACK);
+			ili9341_DrawRGBImage(0, 180, 320, 62, StrengthAimImage);
+			ili9341_FillRect(strengthBarAimValue, 178, 20, 62, COLOR_BLACK);
 			checkingRxData();
+			HAL_Delay(50);
 		}
 	}
 }
@@ -428,7 +431,7 @@ void animationHitThePitch()
 	{
 		if(ballsXAxis[0] > 175)
 		{
-			ili9341_DrawRGBImage(0, 172, 320, 171, gameImage);
+			ili9341_DrawRGBImage(0, 0, 320, 171, gameImage);
 			ballsXAxis[0] = ballsXAxis[0] - 19;
 			ballsYAxis[0] = ballsYAxis[0] - 11;
 			initImageBall();
@@ -436,7 +439,7 @@ void animationHitThePitch()
 		}
 		if(ballsXAxis[0] < 175 && ballsXAxis[0] > 69)
 		{
-			ili9341_DrawRGBImage(0, 172, 320, 171, gameImage);
+			ili9341_DrawRGBImage(0, 0, 320, 171, gameImage);
 			ballsXAxis[0] = ballsXAxis[0] - 21;
 			ballsYAxis[0] = ballsYAxis[0] + 14;
 			initImageBall();
@@ -453,7 +456,7 @@ void strongThrowAnimation()
 	{
 		if(ballsXAxis[0] > 0)
 		{
-			ili9341_DrawRGBImage(0, 172, 320, 171, gameImage);
+			ili9341_DrawRGBImage(0, 0, 320, 171, gameImage);
 			ballsXAxis[0] = ballsXAxis[0] - 20;
 			ballsYAxis[0] = ballsYAxis[0] - 4;
 			initImageBall();
@@ -469,7 +472,7 @@ void weakThrowAnimation()
 	{
 		if(ballsXAxis[0] > 200)
 		{
-			ili9341_DrawRGBImage(0, 172, 320, 171, gameImage);
+			ili9341_DrawRGBImage(0, 0, 320, 171, gameImage);
 			ballsXAxis[0] = ballsXAxis[0] - 19;
 			ballsYAxis[0] = ballsYAxis[0] - 11;
 			initImageBall();
@@ -477,7 +480,7 @@ void weakThrowAnimation()
 		}
 		if(ballsXAxis[0] < 200 && ballsXAxis[0] > 30)
 		{
-			ili9341_DrawRGBImage(0, 172, 320, 171, gameImage);
+			ili9341_DrawRGBImage(0, 0, 320, 171, gameImage);
 			ballsXAxis[0] = ballsXAxis[0] - 21;
 			ballsYAxis[0] = ballsYAxis[0] + 14;
 			initImageBall();

@@ -24,6 +24,12 @@
 #include "stm32f4xx_hal.h"
 #include "MPU9250.h"
 #include <stdio.h>
+#include "ili9341.h"
+#include "common.h"
+#include "fonts.h"
+#include "lcd.h"
+#include "math.h"
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -105,6 +111,8 @@ int main(void)
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
 	MPU9250_init(&hi2c2);
+	ili9341_Init();
+	ili9341_FillScreen(COLOR_BLACK);
 	//HAL_UART_Transmit(&huart2, "Teste", strlen("Teste"), 100);
   /* USER CODE END 2 */
 
@@ -115,28 +123,39 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		updateIMU();
-		if ((HAL_GetTick() - timer) > 1000)
+		if ((HAL_GetTick() - timer) > 10)
 		{
+			ili9341_FillScreen(COLOR_BLACK);
 			sprintf(&buffer,"TEMPERATURE : %.2f\r\n",temperatura);
-			HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
-			sprintf(&buffer,"ACCELERO X : %.2f", ax);
-			HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			//HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			ili9341_Printnewtstr(15, COLOR_YELLOW, &mono9x7bold, 1,buffer);
+			sprintf(&buffer,"ACCELERATION X : %.2f", ax);
+			//HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			ili9341_Printnewtstr(30, COLOR_YELLOW, &mono9x7bold, 1,buffer);
 			sprintf(&buffer,"\tY : %.2f", ay);
-			HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			//HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			ili9341_Printnewtstr(45, COLOR_YELLOW, &mono9x7bold, 1,buffer);
 			sprintf(&buffer,"\tZ : %.2f\r\n", ax);
-			HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
-			sprintf(&buffer,"GYRO X : %.2f", gx);
-			HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			//HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			ili9341_Printnewtstr(60, COLOR_YELLOW, &mono9x7bold, 1,buffer);
+			sprintf(&buffer,"GYROSCOPE X : %.2f", gx);
+			//HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			ili9341_Printnewtstr(75, COLOR_YELLOW, &mono9x7bold, 1,buffer);
 			sprintf(&buffer,"\tY : %.2f", gy);
-			HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			//HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			ili9341_Printnewtstr(90, COLOR_YELLOW, &mono9x7bold, 1,buffer);
 			sprintf(&buffer,"\tZ : %.2f\r\n", gz);
-			HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
-			sprintf(&buffer,"MAG X : %.2f", mx);
-			HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			//HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			ili9341_Printnewtstr(105, COLOR_YELLOW, &mono9x7bold, 1,buffer);
+			sprintf(&buffer,"COMPASS X : %.2f", mx);
+			//HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			ili9341_Printnewtstr(120, COLOR_YELLOW, &mono9x7bold, 1,buffer);
 			sprintf(&buffer,"\tY : %.2f", my);
-			HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			//HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			ili9341_Printnewtstr(135, COLOR_YELLOW, &mono9x7bold, 1,buffer);
 			sprintf(&buffer,"\tZ : %.2f\r\n", mz);
-			HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			//HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
+			ili9341_Printnewtstr(150, COLOR_YELLOW, &mono9x7bold, 1,buffer);
 //			updateOrientation();
 //			getEulerAngles_deg(&roll, &pitch, &yaw);
 //			//sprintf(&buffer,"ACC ANGLE X : %.2f", );
@@ -152,6 +171,8 @@ int main(void)
 			sprintf(&buffer,"=======================================================\r\n");
 			HAL_UART_Transmit(&huart2, buffer, strlen(buffer), 100);
 			timer = HAL_GetTick();
+
+
 		}
 	}
   /* USER CODE END 3 */

@@ -64,8 +64,8 @@ all: main-build
 main-build: MOC32-Aula7-USB-Paint.elf secondary-outputs
 
 # Tool invocations
-MOC32-Aula7-USB-Paint.elf MOC32-Aula7-USB-Paint.map: $(OBJS) $(USER_OBJS) C:\Users\salom\Documents\GitHub\STM32F407\MOC32\MOC32-Aula7-USB-Paint\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "MOC32-Aula7-USB-Paint.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\salom\Documents\GitHub\STM32F407\MOC32\MOC32-Aula7-USB-Paint\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MOC32-Aula7-USB-Paint.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+MOC32-Aula7-USB-Paint.elf MOC32-Aula7-USB-Paint.map: $(OBJS) $(USER_OBJS) C:\Users\salom\Documents\STM32F407\MOC32\MOC32-Aula7-USB-Paint\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "MOC32-Aula7-USB-Paint.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\salom\Documents\STM32F407\MOC32\MOC32-Aula7-USB-Paint\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MOC32-Aula7-USB-Paint.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
